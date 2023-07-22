@@ -40,7 +40,17 @@ app.get("/products", async (req, res) => {
     const paginatedData = data.slice(startIndex, endIndex);
     return res.status(200).json(paginatedData);
   } catch (error) {
-    return res.status(500).json({error: error})
+    return res.status(500).json({ error: error });
+  }
+});
+
+app.get("/product/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await Products.findById(id);
+    return res.status(200).json(post);
+  } catch (error) {
+    return res.status(404).json({ error: error });
   }
 });
 

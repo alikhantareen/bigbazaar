@@ -1,4 +1,5 @@
 import user from '../assets/user_avatar.png'
+import {Link} from 'react-router-dom'
 
 
 const Header = () => {
@@ -6,7 +7,7 @@ const Header = () => {
     <nav>
       <div className="navbar bg-base-100">
         <div className="flex-1">
-          <a className="btn btn-ghost normal-case text-xl">BigBazaar</a>
+          <Link to={`/`} className="btn btn-ghost normal-case text-xl text-transparent bg-clip-text bg-gradient-to-r from-rose-800 to-rose-500">BIGBAZAAR</Link>
         </div>
         <div className="flex-none">
           <div className="dropdown dropdown-end">
