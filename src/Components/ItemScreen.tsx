@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import React, { useState } from "react";
 
 const ItemScreen = () => {
-  const [rotate, setRotate] = useState(false);
   const [count, setCount] = useState(0);
 
   const addCount = () => {
