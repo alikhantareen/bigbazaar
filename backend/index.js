@@ -8,6 +8,7 @@ require("dotenv").config();
 const app = express();
 const PORT = 5050;
 const Products = require("./Models/Products");
+const User = require("./Models/User");
 
 //Database connection
 (async () => {
@@ -20,16 +21,6 @@ const Products = require("./Models/Products");
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-//api to get all products
-// app.get("/", async (req, res) => {
-//   try {
-//     let data = await Products.find({});
-//     return res.status(200).json(data);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
 
 app.get("/products", async (req, res) => {
   try {
@@ -53,6 +44,86 @@ app.get("/product/:id", async (req, res) => {
     return res.status(404).json({ error: error });
   }
 });
+
+// Handling user signup
+const signUp = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({
+      message: "Please Provide Required Information",
+    });
+  }
+
+  const hash_password = await bcrypt.hash(password, 10);
+
+  const userData = {
+    email,
+    hash_password,
+  };
+
+  const user = await User.findOne({ email });
+  if (user) {
+    return res.status(400).json({
+      message: "User already registered",
+    });
+  } else {
+    User.create(userData).then((user, err) => {
+      if (err) res.status(400).json({ err });
+      else {
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+          expiresIn: "30d",
+        });
+        const { _id, email } = user;
+        res.status(200).json({
+          message: "User created Successfully",
+          token,
+          user: { _id, email },
+        });
+      }
+    });
+  }
+};
+
+const signIn = async (req, res) => {
+  try {
+    if (!req.body.email || !req.body.password) {
+      res.status(400).json({
+        message: "Please enter email and password",
+      });
+      return;
+    }
+
+    const user = await User.findOne({ email: req.body.email });
+    const authenticated = await user.authenticate(req.body.password);
+
+    if (user) {
+      if (authenticated) {
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+          expiresIn: "30d",
+        });
+        const { _id, email } = user;
+        res.status(200).json({
+          token,
+          user: { _id, email },
+        });
+      } else {
+        res.status(400).json({
+          message: "Something went wrong!",
+        });
+      }
+    } else {
+      res.status(404).json({
+        message: "User does not exist..!",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error });
+  }
+};
+
+app.post("/signup", signUp);
+app.post("/login", signIn);
 
 // start the Express server
 app.listen(PORT, () => {

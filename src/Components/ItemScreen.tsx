@@ -1,21 +1,33 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import Header from "./Header";
-import { useParams } from "react-router-dom";
-import React, { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const ItemScreen = () => {
-  const [count, setCount] = useState(0);
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [count, setCount] = useState(1);
 
   const addCount = () => {
     setCount((prev) => prev + 1);
   };
 
   const minusCount = () => {
-    if (count > 0) {
+    if (count > 1) {
       setCount((prev) => prev - 1);
     }
   };
+
+  function verifyUser() {
+    if(localStorage.getItem("token")) {
+      alert("user logged in");
+      return;
+    }
+    localStorage.setItem("link", id!)
+    navigate(`/login`);
+  }
+
   type product = {
     _id: number;
     id: number;
@@ -29,7 +41,6 @@ const ItemScreen = () => {
         count: number
     }
   };
-  const { id } = useParams();
   async function get_product(product_id: any) {
     const res = await axios.get(`http://localhost:5050/product/${product_id}`);
     const data: product = await res.data;
@@ -108,7 +119,7 @@ const ItemScreen = () => {
                   <hr className=" bg-gray-200 w-full mt-4" />
                 </div>
 
-                <button className="btn btn-primary font-medium text-base leading-4 text-white w-full mt-10">
+                <button onClick={verifyUser} className="btn btn-primary font-medium text-base leading-4 text-white w-full mt-10">
                   Add to shopping bag
                 </button>
               </div>
