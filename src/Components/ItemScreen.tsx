@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import Header from "./Header";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import useCartStore  from "../store";
 
 const ItemScreen = () => {
   const navigate = useNavigate();
@@ -19,12 +20,18 @@ const ItemScreen = () => {
     }
   };
 
+  const add = useCartStore((state: any) => state.addToCart);
+
+  function addOrder() {
+    add({first: "hahaha"});
+  }
+
   function verifyUser() {
-    if(localStorage.getItem("token")) {
+    if (localStorage.getItem("token")) {
       alert("user logged in");
       return;
     }
-    localStorage.setItem("link", id!)
+    localStorage.setItem("link", id!);
     navigate(`/login`);
   }
 
@@ -37,9 +44,9 @@ const ItemScreen = () => {
     category: string;
     image: string;
     rating: {
-        rate: number,
-        count: number
-    }
+      rate: number;
+      count: number;
+    };
   };
   async function get_product(product_id: any) {
     const res = await axios.get(`http://localhost:5050/product/${product_id}`);
@@ -71,9 +78,9 @@ const ItemScreen = () => {
 
                 <div className=" flex flex-row justify-between  mt-5">
                   <div className=" flex flex-row space-x-3">
-                  <p className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 font-normal text-base leading-4 text-gray-700 hover:underline hover:text-gray-800 duration-100 cursor-pointer">
-                    {data?.rating.rate} Ratings
-                  </p>
+                    <p className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 font-normal text-base leading-4 text-gray-700 hover:underline hover:text-gray-800 duration-100 cursor-pointer">
+                      {data?.rating.rate} Ratings
+                    </p>
                   </div>
                   <p className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 font-normal text-base leading-4 text-gray-700 hover:underline hover:text-gray-800 duration-100 cursor-pointer">
                     {data?.rating.count} Reviews
@@ -119,7 +126,10 @@ const ItemScreen = () => {
                   <hr className=" bg-gray-200 w-full mt-4" />
                 </div>
 
-                <button onClick={verifyUser} className="btn btn-primary font-medium text-base leading-4 text-white w-full mt-10">
+                <button
+                  onClick={addOrder}
+                  className="btn btn-primary font-medium text-base leading-4 text-white w-full mt-10"
+                >
                   Add to shopping bag
                 </button>
               </div>
@@ -128,10 +138,7 @@ const ItemScreen = () => {
 
               <div className=" w-full sm:w-96 md:w-8/12  lg:w-6/12 flex justify-center lg:flex-row flex-col lg:gap-8 sm:gap-6 gap-4">
                 <div className=" w-full lg:w-8/12 bg-gray-100 flex justify-center items-center">
-                  <img
-                    src={data?.image}
-                    alt={data?.title}
-                  />
+                  <img src={data?.image} alt={data?.title} />
                 </div>
               </div>
             </div>
