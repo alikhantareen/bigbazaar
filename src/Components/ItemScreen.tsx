@@ -3,12 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import Header from "./Header";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import useCartStore  from "../store";
+import useCartStore from "../store";
 
 const ItemScreen = () => {
+  const [count, setCount] = useState(1);
   const navigate = useNavigate();
   const { id } = useParams();
-  const [count, setCount] = useState(1);
+
+  const addToCart = useCartStore((state: any) => state.addToCart);
 
   const addCount = () => {
     setCount((prev) => prev + 1);
@@ -20,15 +22,9 @@ const ItemScreen = () => {
     }
   };
 
-  const add = useCartStore((state: any) => state.addToCart);
-
   function addOrder() {
-    add({first: "hahaha"});
-  }
-
-  function verifyUser() {
     if (localStorage.getItem("token")) {
-      alert("user logged in");
+      addToCart({...data, quantity: count});
       return;
     }
     localStorage.setItem("link", id!);
@@ -94,36 +90,32 @@ const ItemScreen = () => {
                   $ {data?.price}
                 </p>
 
-                <div className="lg:mt-11 mt-10">
-                  <div className="flex flex-row justify-between">
-                    <p className=" font-medium text-base leading-4 text-gray-600">
-                      Select quantity
-                    </p>
-                    <div className="flex">
-                      <span
-                        onClick={minusCount}
-                        className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-r-0 w-7 h-7 flex items-center justify-center pb-1"
-                      >
-                        -
-                      </span>
-                      <input
-                        id="counter"
-                        aria-label="input"
-                        className="border border-gray-300 h-full text-center w-14 pb-1"
-                        type="text"
-                        value={count}
-                        onChange={(e) => e.target.value}
-                      />
-                      <span
-                        onClick={addCount}
-                        className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-l-0 w-7 h-7 flex items-center justify-center pb-1 "
-                      >
-                        +
-                      </span>
-                    </div>
+                <div className="flex flex-row justify-between mt-10">
+                  <p className=" font-medium text-base leading-4 text-gray-600">
+                    Select quantity
+                  </p>
+                  <div className="flex">
+                    <span
+                      onClick={minusCount}
+                      className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-r-0 w-7 h-7 flex items-center justify-center pb-1"
+                    >
+                      -
+                    </span>
+                    <input
+                      id="counter"
+                      aria-label="input"
+                      className="border border-gray-300 h-full text-center w-14 pb-1"
+                      type="text"
+                      value={count}
+                      onChange={(e) => e.target.value}
+                    />
+                    <span
+                      onClick={addCount}
+                      className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer border border-gray-300 border-l-0 w-7 h-7 flex items-center justify-center pb-1 "
+                    >
+                      +
+                    </span>
                   </div>
-                  <hr className=" bg-gray-200 w-full my-2" />
-                  <hr className=" bg-gray-200 w-full mt-4" />
                 </div>
 
                 <button

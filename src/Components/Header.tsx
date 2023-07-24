@@ -2,15 +2,19 @@ import user from "../assets/user_avatar.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useCartStore  from "../store";
+import localforage from "localforage";
 
 const Header = () => {
   const navigate = useNavigate();
   const [authenticated, setauthenticated] = useState("");
   const [id, profileID] = useState("");
-  const globalCount = useCartStore((state: any) => state.cart.length);
+  let globalCount = useCartStore((state: any) => state.cart.length);
   function logout() {
     setauthenticated("");
     localStorage.clear();
+    localforage.removeItem("cart-store", () => {
+      console.log("cart state deleted");
+    })
     navigate("/");
   }
   useEffect(() => {
@@ -60,9 +64,9 @@ const Header = () => {
                 <span className="font-bold text-lg">{globalCount} Items</span>
                 {/* <span className="text-info">Subtotal: $999</span> */}
                 <div className="card-actions">
-                  <button className="btn btn-primary btn-block">
+                  <Link to={`/cart`} className="btn btn-primary btn-block">
                     View cart
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
