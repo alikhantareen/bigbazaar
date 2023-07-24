@@ -5,13 +5,15 @@ import useCartStore from "../store";
 function CartScreen() {
   const cartItems = useCartStore((state: any) => state.cart);
   const removeItem = useCartStore((state: any) => state.removeFromCart);
+  const updateQty = useCartStore((state: any) => state.updateQty);
   function subTotal(): any {
     let total: number = 0;
     cartItems.forEach((element: product) => {
-      total += (parseInt(element.price) * element.quantity);
+      total += parseInt(element.price) * element.quantity;
     });
     return total;
   }
+
   type product = {
     _id: number;
     id: number;
@@ -20,7 +22,7 @@ function CartScreen() {
     description: string;
     category: string;
     image: string;
-    quantity: number,
+    quantity: number;
     rating: {
       rate: number;
       count: number;
@@ -79,10 +81,15 @@ function CartScreen() {
                           <p className="text-base font-black leading-none text-gray-800">
                             {elem.title}
                           </p>
-                          <select className="py-2 px-1 border border-gray-200 mr-6 focus:outline-none">
-                            <option>01</option>
-                            <option>02</option>
-                            <option>03</option>
+                          <select
+                            onChange={(e) => updateQty(elem.id, e.target.value)}
+                            className="py-2 px-1 border border-gray-200 mr-6 focus:outline-none"
+                          >
+                            <option value={1}>01</option>
+                            <option value={2}>02</option>
+                            <option value={3}>03</option>
+                            <option value={4}>04</option>
+                            <option value={5}>05</option>
                           </select>
                         </div>
                         <p className="text-xs leading-3 text-gray-600 pt-2">
@@ -92,11 +99,14 @@ function CartScreen() {
                           Ratings: {elem.rating.rate}
                         </p>
                         <p className="w-96 text-xs leading-3 text-gray-600">
-                        Qty: {elem.quantity}
+                          Qty: {elem.quantity}
                         </p>
                         <div className="flex items-center justify-between pt-5 pr-6">
                           <div className="flex itemms-center">
-                            <p onClick={() => removeItem(elem.id)} className="text-xs leading-3 underline text-red-500 cursor-pointer">
+                            <p
+                              onClick={() => removeItem(elem.id)}
+                              className="text-xs leading-3 underline text-red-500 cursor-pointer"
+                            >
                               Remove
                             </p>
                           </div>
@@ -132,19 +142,26 @@ function CartScreen() {
                       </p>
                     </div>
                   </div>
-                  <div>
-                    <div className="flex items-center pb-6 justify-between lg:pt-5 pt-20">
-                      <p className="text-2xl leading-normal text-gray-800">
-                        Total
-                      </p>
-                      <p className="text-2xl font-bold leading-normal text-right text-gray-800">
-                        ${subTotal() + 30}
-                      </p>
+                  {cartItems.length === 0 ? (
+                    ""
+                  ) : (
+                    <div>
+                      <div className="flex items-center pb-6 justify-between lg:pt-5 pt-20">
+                        <p className="text-2xl leading-normal text-gray-800">
+                          Total
+                        </p>
+                        <p className="text-2xl font-bold leading-normal text-right text-gray-800">
+                          ${subTotal() + 30}
+                        </p>
+                      </div>
+                      <Link
+                        to={`/checkout`}
+                        className="text-base leading-none w-full btn btn-primary text-white"
+                      >
+                        Checkout
+                      </Link>
                     </div>
-                    <button className="text-base leading-none w-full btn btn-primary text-white">
-                      Checkout
-                    </button>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>

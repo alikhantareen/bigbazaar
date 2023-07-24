@@ -16,6 +16,16 @@ const useCartStore = create(
         set((state: any) => ({
           cart: state.cart.filter((item: any) => item.id !== productId),
         })),
+      updateQty: (id: number, qty: any) =>
+        set((state: any) => ({
+          cart: state.cart.map((item: any) => {
+            if (item.id === id) {
+              return { ...item, quantity: qty };
+            } else {
+              return item;
+            }
+          }),
+        })),
     }),
     {
       name: "cart-store", // Name of the localforage store
