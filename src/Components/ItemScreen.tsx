@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import Header from "./Header";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import useCartStore from "../store";
 
@@ -24,7 +24,7 @@ const ItemScreen = () => {
 
   function addOrder() {
     if (localStorage.getItem("token")) {
-      addToCart({...data, quantity: count});
+      addToCart({ ...data, quantity: count });
       return;
     }
     localStorage.setItem("link", id!);
@@ -61,6 +61,26 @@ const ItemScreen = () => {
           <p>Loading...</p>
         ) : (
           <div className="2xl:container 2xl:mx-auto lg:py-16 lg:px-20 md:py-12 md:px-6 py-9 px-4 ">
+            <div className="flex items-center text-gray-500 hover:text-gray-600 cursor-pointer">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon icon-tabler icon-tabler-chevron-left"
+                width={16}
+                height={16}
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <polyline points="15 6 9 12 15 18" />
+              </svg>
+              <Link to={"/"} className="text-sm pl-2 leading-none">
+                Back
+              </Link>
+            </div>
             <div className="flex justify-center items-center lg:flex-row flex-col gap-16">
               {/* <!-- Description Div --> */}
 

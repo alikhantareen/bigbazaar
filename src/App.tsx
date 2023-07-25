@@ -6,6 +6,7 @@ import Signup from "./Components/Signup";
 import CartScreen from "./Components/CartScreen";
 import CheckoutScreen from "./Components/CheckoutScreen";
 import ThankyouScreen from "./Components/ThankyouScreen";
+import ProfileScreen from "./Components/ProfileScreen";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/cart" element={<CartScreen/>} />
         <Route path="/checkout" element={<CheckoutScreen />} />
         <Route path="/thankyou" element={<ThankyouScreen />} />
+        <Route path="/profile" element={<ProfileScreen />} />
       </Routes>
     </div>
   );

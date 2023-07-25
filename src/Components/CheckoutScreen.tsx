@@ -5,9 +5,9 @@ import useCartStore from "../store";
 const CheckoutScreen = () => {
   const navigate = useNavigate();
   const cartItems = useCartStore((state: any) => state.cart);
-  const countries = ["China", "Russia", "UK"];
+  const countries = ["USA", "ASIA", "UK", "AUS", "NZ", "RUSSIA"];
   const [menu, setMenu] = useState(false);
-  const [country, setCountry] = useState("United States");
+  const [country, setCountry] = useState("USA");
 
   const changeText = (e: any) => {
     setMenu(false);
