@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useCartStore from "../store";
 import { useEffect } from "react";
 
@@ -10,6 +10,12 @@ const ThankyouScreen = () => {
       cartItems.pop();
     }
     navigate("/");
+  }
+  function seeProfile() {
+    while (cartItems.length !== 0) {
+      cartItems.pop();
+    }
+    navigate(`/profile/${localStorage.getItem("user_id")}`);
   }
   useEffect(() => {
     if (cartItems.length === 0) {
@@ -42,6 +48,12 @@ const ThankyouScreen = () => {
               className="px-12 btn btn-primary text-white py-3"
             >
               Shop More
+            </button>
+            <button
+              onClick={seeProfile}
+              className="px-12 btn btn-primary text-white py-3 ml-4"
+            >
+              See my orders
             </button>
           </div>
         </div>

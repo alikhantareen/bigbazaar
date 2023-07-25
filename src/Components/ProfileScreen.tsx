@@ -23,6 +23,10 @@ const ProfileScreen = () => {
     });
     return total;
   }
+  function dateFunc(d: any) {
+    let date = new Date(d);
+    return date.toLocaleString();
+  }
   return (
     <>
       <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
@@ -46,11 +50,6 @@ const ProfileScreen = () => {
             Back
           </Link>
         </div>
-        <div className="flex justify-start item-start space-y-2 flex-col ">
-          <h1 className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9  text-gray-800">
-            Order ID: {data ? data[0]._id : ''}
-          </h1>
-        </div>
         <div className="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch  w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
           <div className="flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8">
             <div className="flex flex-col justify-start items-start bg-gray-50 px-4 py-4 md:py-6 md:p-6 xl:p-8 w-full">
@@ -61,7 +60,7 @@ const ProfileScreen = () => {
                 <p>Loading...</p>
               ) : isError ? (
                 <p>Failed to load.</p>
-              ) : (
+              ) : data.length === 0 ? <p className="mt-4">You have 0 orders in queue.</p> : (
                 data.map((elem: any) => {
                   return (
                     <div className="mt-4 md:mt-6 flex  flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full ">
@@ -84,8 +83,12 @@ const ProfileScreen = () => {
                           </h3>
                           <div className="flex justify-start items-start flex-col space-y-2">
                           <p className="text-sm leading-none text-gray-800">
+                              <span className="text-gray-300">Order ID: </span>{" "}
+                              {elem._id}
+                            </p>
+                          <p className="text-sm leading-none text-gray-800">
                               <span className="text-gray-300">Order date: </span>{" "}
-                              {elem.createdAt}
+                              {dateFunc(elem.createdAt)}
                             </p>
                             <p className="text-sm leading-none text-gray-800">
                               <span className="text-gray-300">Category: </span>{" "}
@@ -128,7 +131,7 @@ const ProfileScreen = () => {
                     <p className="text-base leading-4 text-gray-800">
                       Subtotal
                     </p>
-                    <p className="text-base leading-4 text-gray-600">${data ? subTotal() : ''}</p>
+                    <p className="text-base leading-4 text-gray-600">${data && data.length > 0 ? subTotal() : ''}</p>
                   </div>
                   <div className="flex justify-between items-center w-full">
                     <p className="text-base leading-4 text-gray-800">
@@ -142,7 +145,7 @@ const ProfileScreen = () => {
                     Total
                   </p>
                   <p className="text-base font-semibold leading-4 text-gray-600">
-                    ${data ? subTotal() + 30 : ''}
+                    ${data && data.length > 0 ? subTotal() + 30 : ''}
                   </p>
                 </div>
               </div>
@@ -168,7 +171,7 @@ const ProfileScreen = () => {
                         </span>
                       </p>
                       <p className="text-md leading-6 text-gray-800">
-                        Payment method: {data ? data[0].payment_method : ''}
+                        Payment method: {data && data.length > 0 ? data[0].payment_method : ''}
                       </p>
                     </div>
                   </div>
@@ -192,10 +195,10 @@ const ProfileScreen = () => {
                   />
                   <div className=" flex justify-start items-start flex-col space-y-2">
                     <p className="text-base font-semibold leading-4 text-left text-gray-800">
-                      {data ? data[0].name: ''}
+                      {data && data.length > 0 ? data[0].name: ''}
                     </p>
                     <p className="text-sm leading-5 text-gray-600">
-                      Total: {data ? data.length : ''} orders
+                      Total: {data && data.length === 0 ? '0' : data && data.length ? data && data.length :''} orders
                     </p>
                   </div>
                 </div>
@@ -233,7 +236,7 @@ const ProfileScreen = () => {
                       Shipping Address
                     </p>
                     <p className="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">
-                      {data ? data[0].address : ''}
+                      {data && data.length > 0 ? data[0].address : ''}
                     </p>
                   </div>
                 </div>
