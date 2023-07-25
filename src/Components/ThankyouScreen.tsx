@@ -5,6 +5,12 @@ import { useEffect } from "react";
 const ThankyouScreen = () => {
   const cartItems = useCartStore((state: any) => state.cart);
   const navigate = useNavigate();
+  function navigator() {
+    while (cartItems.length !== 0) {
+      cartItems.pop();
+    }
+    navigate("/");
+  }
   useEffect(() => {
     if (cartItems.length === 0) {
       navigate("/");
@@ -31,9 +37,12 @@ const ThankyouScreen = () => {
           </p>
           <p> Have a great day! </p>
           <div className="py-10 text-center">
-            <Link to={`/`} className="px-12 btn btn-primary text-white py-3">
+            <button
+              onClick={navigator}
+              className="px-12 btn btn-primary text-white py-3"
+            >
               Shop More
-            </Link>
+            </button>
           </div>
         </div>
       </div>

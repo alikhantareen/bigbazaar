@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+var Schema = mongoose.Schema;
 
 const order_schema = new mongoose.Schema(
   {
@@ -9,6 +10,7 @@ const order_schema = new mongoose.Schema(
     name: String,
     mobile_num: String,
     address: String,
+    payment_method: String
   },
   {
     timestamps: true,

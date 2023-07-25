@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useCartStore from "../store";
+import axios from "axios";
 
 const CheckoutScreen = () => {
   const navigate = useNavigate();
@@ -9,6 +10,7 @@ const CheckoutScreen = () => {
   const [menu, setMenu] = useState(false);
   const [showCardInfo, setShowCardInfo] = useState(false);
   const [method, setMethod] = useState("Pay through card");
+  const [error, setError] = useState("");
 
   const changeText = (e: any) => {
     setMenu(false);
@@ -19,6 +21,45 @@ const CheckoutScreen = () => {
       setShowCardInfo(false);
     }
   };
+
+  function build_data() {
+    let name = (document.getElementById("name") as HTMLInputElement).value;
+    let mobile_number = (
+      document.getElementById("mobile_number") as HTMLInputElement
+    ).value;
+    let address = (document.getElementById("address") as HTMLInputElement)
+      .value;
+
+    if (!name || !mobile_number || !address) {
+      return false;
+    }
+    let order_arrays: any = [];
+    cartItems.forEach((elem: any) => {
+      order_arrays.push({
+        name: (document.getElementById("name") as HTMLInputElement).value,
+        mobile_number: (
+          document.getElementById("mobile_number") as HTMLInputElement
+        ).value,
+        address: (document.getElementById("address") as HTMLInputElement).value,
+        pending: true,
+        payment_method: method,
+        user: localStorage.getItem("user_id"),
+        product_id: elem._id,
+      });
+    });
+
+    return order_arrays;
+  }
+
+  async function placeOrder() {
+    let orders = build_data();
+    if(!orders) return setError("Please fill all the fields.");
+    const res = await axios.post(`http://localhost:5050/placeOrder`, orders);
+    const data = await res.data;
+    if (data) {
+      navigate(`/thankyou`);
+    }
+  }
 
   useEffect(() => {
     if (cartItems.length === 0) {
@@ -145,6 +186,9 @@ const CheckoutScreen = () => {
               {showCardInfo ? (
                 <>
                   <div className="mt-8">
+                    <p className="text-red-600 font-semibold text-center mb-2">
+                      {error}
+                    </p>
                     <input
                       id="name"
                       className="border border-gray-300 p-4 rounded w-full text-base leading-4 placeholder-gray-600 text-gray-600"
@@ -155,7 +199,7 @@ const CheckoutScreen = () => {
 
                   <div className="mt-8">
                     <input
-                      id="monile_number"
+                      id="mobile_number"
                       className="border border-gray-300 p-4 rounded w-full text-base leading-4 placeholder-gray-600 text-gray-600"
                       type="number"
                       placeholder="Mobile Number"
@@ -171,7 +215,10 @@ const CheckoutScreen = () => {
                     />
                   </div>
 
-                  <button className="btn btn-primary rounded w-full mt-6">
+                  <button
+                    onClick={placeOrder}
+                    className="btn btn-primary rounded w-full mt-6"
+                  >
                     <div>
                       <p className="text-base leading-4">Place Order</p>
                     </div>
@@ -190,19 +237,19 @@ const CheckoutScreen = () => {
                     <div>
                       <input
                         className="border rounded-tl rounded-tr border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                        type="email"
+                        type="number"
                         placeholder="0000 1234 6549 15151"
                       />
                     </div>
                     <div className="flex-row flex">
                       <input
                         className="border rounded-bl border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                        type="email"
+                        type="text"
                         placeholder="MM/YY"
                       />
                       <input
                         className="border rounded-br border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                        type="email"
+                        type="number"
                         placeholder="CVC"
                       />
                     </div>

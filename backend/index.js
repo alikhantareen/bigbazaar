@@ -9,6 +9,7 @@ const app = express();
 const PORT = 5050;
 const Products = require("./Models/Products");
 const User = require("./Models/User");
+const Order = require("./Models/Order");
 
 //Database connection
 (async () => {
@@ -22,6 +23,7 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+//get all products
 app.get("/products", async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
@@ -35,6 +37,7 @@ app.get("/products", async (req, res) => {
   }
 });
 
+//get specific product
 app.get("/product/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -42,6 +45,17 @@ app.get("/product/:id", async (req, res) => {
     return res.status(200).json(post);
   } catch (error) {
     return res.status(404).json({ error: error });
+  }
+});
+
+//placing order
+app.post("/placeOrder", async (req, res) => {
+  try {
+    const data = req.body;
+    const inInserted = await Order.insertMany(data);
+    return res.status(200).json({ respose: true });
+  } catch (error) {
+    return res.status(500).json({ response: false });
   }
 });
 
