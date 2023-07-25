@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema(
         rating: {
             rate: Number,
             count: Number
-        }
+        },
     },
     {
         timestamps: true

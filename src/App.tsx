@@ -20,7 +20,7 @@ function App() {
         <Route path="/cart" element={<CartScreen/>} />
         <Route path="/checkout" element={<CheckoutScreen />} />
         <Route path="/thankyou" element={<ThankyouScreen />} />
-        <Route path="/profile" element={<ProfileScreen />} />
+        <Route path="/profile/:id" element={<ProfileScreen />} />
       </Routes>
     </div>
   );

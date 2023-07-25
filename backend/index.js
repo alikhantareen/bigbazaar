@@ -59,6 +59,17 @@ app.post("/placeOrder", async (req, res) => {
   }
 });
 
+//get users orders
+app.get("/profile/:id", async(req, res) => {
+  try {
+    const { id } = req.params;
+    const list_of_products = await Order.find({user: id});
+    return res.status(200).json(list_of_products);
+  } catch (error) {
+    return res.status(404).json({ res: false });
+  }
+})
+
 // Handling user signup
 const signUp = async (req, res) => {
   const { email, password } = req.body;

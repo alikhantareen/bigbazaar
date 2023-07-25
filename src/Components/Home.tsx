@@ -21,10 +21,13 @@ const Home = () => {
   const { isLoading, isError, data } = useQuery({
     queryKey: ["products", page],
     queryFn: () => getProducts(page),
+    refetchOnWindowFocus: false
   });
   async function getProducts(page = 1) {
     const res = await axios.get(`http://localhost:5050/products?page=${page}`);
     const data = await res.data;
+    console.log(data);
+    
     return data;
   }
   function nextPage() {

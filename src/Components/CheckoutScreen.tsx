@@ -34,8 +34,24 @@ const CheckoutScreen = () => {
       return false;
     }
     let order_arrays: any = [];
+    // cartItems.forEach((elem: any) => {
+    //   order_arrays.push({
+    //     name: (document.getElementById("name") as HTMLInputElement).value,
+    //     mobile_number: (
+    //       document.getElementById("mobile_number") as HTMLInputElement
+    //     ).value,
+    //     address: (document.getElementById("address") as HTMLInputElement).value,
+    //     pending: true,
+    //     payment_method: method,
+    //     user: localStorage.getItem("user_id"),
+    //     product_id: elem._id,
+    //     quantity: elem.quantity
+    //   });
+    // });
+
     cartItems.forEach((elem: any) => {
       order_arrays.push({
+        ...elem,
         name: (document.getElementById("name") as HTMLInputElement).value,
         mobile_number: (
           document.getElementById("mobile_number") as HTMLInputElement
@@ -44,16 +60,16 @@ const CheckoutScreen = () => {
         pending: true,
         payment_method: method,
         user: localStorage.getItem("user_id"),
-        product_id: elem._id,
       });
     });
+    
 
     return order_arrays;
   }
 
   async function placeOrder() {
     let orders = build_data();
-    if(!orders) return setError("Please fill all the fields.");
+    if (!orders) return setError("Please fill all the fields.");
     const res = await axios.post(`http://localhost:5050/placeOrder`, orders);
     const data = await res.data;
     if (data) {
