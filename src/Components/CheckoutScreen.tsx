@@ -69,8 +69,8 @@ const CheckoutScreen = () => {
           </div>
 
           <div className="flex flex-col xl:flex-row justify-center xl:justify-between space-y-6 xl:space-y-0 xl:space-x-6 w-full">
-            <div className="xl:w-3/5 flex flex-col sm:flex-row xl:flex-col justify-center items-center bg-gray-100 py-7 sm:py-0 xl:py-10 px-10 xl:w-full">
-              <div className="flex flex-col justify-start items-start w-full space-y-4">
+            <div className="flex flex-col sm:flex-row xl:flex-col justify-center items-center bg-gray-100 py-7 sm:py-0 xl:py-10 px-10 xl:w-full">
+              <div className="flex flex-col justify-start items-start w-full space-y-4 md:-mt-72">
                 <p className="text-xl md:text-2xl leading-normal text-gray-800">
                   Coming Soon
                 </p>
@@ -87,25 +87,33 @@ const CheckoutScreen = () => {
             </div>
 
             <div className="p-8 bg-gray-100 flex flex-col lg:w-full xl:w-3/5">
-              <Link to={`/thankyou`} className="btn btn-primary rounded w-full">
-                <div>
-                  <p className="text-base leading-4">Cash on delivery</p>
-                </div>
-              </Link>
-
-              <div className="flex flex-row justify-center items-center mt-6">
-                <hr className="border w-full" />
-                <p className="flex flex-shrink-0 px-4 text-base leading-4 text-gray-600">
-                  or pay with card
-                </p>
-                <hr className="border w-full" />
+              <div className="mt-8">
+                <p className="text-rose-600 text-2xl">Shipping Details</p>
+              </div>
+              <div className="mt-8">
+                <input
+                  id="name"
+                  className="border border-gray-300 p-4 rounded w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                  type="text"
+                  placeholder="Full Name"
+                />
               </div>
 
               <div className="mt-8">
                 <input
+                  id="monile_number"
                   className="border border-gray-300 p-4 rounded w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                  type="email"
-                  placeholder="Email"
+                  type="number"
+                  placeholder="Mobile Number"
+                />
+              </div>
+
+              <div className="mt-8">
+                <input
+                  id="address"
+                  className="border border-gray-300 p-4 rounded w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                  type="text"
+                  placeholder="Address"
                 />
               </div>
 
@@ -198,9 +206,24 @@ const CheckoutScreen = () => {
                 />
               </div>
 
+              <button className="btn btn-primary rounded w-full mt-6">
+                <div>
+                  <p className="text-base leading-4">Cash on delivery</p>
+                </div>
+              </button>
+              <p className="text-sm text-gray-700 mt-3 font-semibold"> * For Cash on delivery, you do not need to put card related information.</p>
+
+              <div className="flex flex-row justify-center items-center mt-6">
+                <hr className="border w-full" />
+                <p className="flex flex-shrink-0 px-4 text-base leading-4 text-gray-600">
+                  OR
+                </p>
+                <hr className="border w-full" />
+              </div>
+
               <button className="mt-8 btn btn-primary rounded w-full">
                 <div>
-                  <p className="text-base leading-4">Pay</p>
+                  <p className="text-base leading-4">Pay now</p>
                 </div>
               </button>
             </div>

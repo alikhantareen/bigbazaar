@@ -30,7 +30,7 @@ const Header = () => {
         <div className="flex-1">
           <Link
             to={`/`}
-            className="btn btn-ghost normal-case text-xl text-transparent bg-clip-text bg-gradient-to-r from-rose-800 to-rose-500"
+            className="btn btn-ghost font-bold normal-case text-xl text-transparent bg-clip-text bg-gradient-to-r from-rose-800 to-rose-500"
           >
             BIGBAZAAR
           </Link>
