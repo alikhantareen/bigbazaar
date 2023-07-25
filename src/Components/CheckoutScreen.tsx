@@ -5,10 +5,10 @@ import useCartStore from "../store";
 const CheckoutScreen = () => {
   const navigate = useNavigate();
   const cartItems = useCartStore((state: any) => state.cart);
-  const payment_method = ["Cash on delivery", "Pay through card"];
+  const payment_method = ["Pay through card", "Cash on delivery"];
   const [menu, setMenu] = useState(false);
   const [showCardInfo, setShowCardInfo] = useState(false);
-  const [method, setMethod] = useState("Cash on delivery");
+  const [method, setMethod] = useState("Pay through card");
 
   const changeText = (e: any) => {
     setMenu(false);
@@ -207,17 +207,32 @@ const CheckoutScreen = () => {
                       />
                     </div>
                   </div>
-                  <label className="mt-8 text-base leading-4 text-gray-800">
-                    Name on card
-                  </label>
-                  <div className="mt-2 flex-col">
+                  <div className="mt-6 flex-col">
                     <div>
                       <input
                         className="border rounded border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
                         type="email"
-                        placeholder="Name on card"
+                        placeholder="Full Name"
                       />
                     </div>
+                  </div>
+
+                  <div className="mt-8">
+                    <input
+                      id="monile_number"
+                      className="border border-gray-300 p-4 rounded w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                      type="number"
+                      placeholder="Mobile Number"
+                    />
+                  </div>
+
+                  <div className="mt-8">
+                    <input
+                      id="address"
+                      className="border border-gray-300 p-4 rounded w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                      type="text"
+                      placeholder="Address"
+                    />
                   </div>
 
                   <button className="mt-8 btn btn-primary rounded w-full">
