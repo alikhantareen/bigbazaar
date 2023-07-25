@@ -5,7 +5,7 @@ const order_schema = new mongoose.Schema(
     user: { type: Schema.Types.ObjectId, ref: "User" },
     product_id: { type: Schema.Types.ObjectId, ref: "Product" },
     order_number: Number,
-    quantity: Number,
+    pending: Boolean,
     name: String,
     mobile_num: String,
     address: String,

@@ -5,13 +5,19 @@ import useCartStore from "../store";
 const CheckoutScreen = () => {
   const navigate = useNavigate();
   const cartItems = useCartStore((state: any) => state.cart);
-  const countries = ["USA", "ASIA", "UK", "AUS", "NZ", "RUSSIA"];
+  const payment_method = ["Cash on delivery", "Pay through card"];
   const [menu, setMenu] = useState(false);
-  const [country, setCountry] = useState("USA");
+  const [showCardInfo, setShowCardInfo] = useState(false);
+  const [method, setMethod] = useState("Cash on delivery");
 
   const changeText = (e: any) => {
     setMenu(false);
-    setCountry(e.target.textContent);
+    setMethod(e.target.textContent);
+    if (method === "Pay through card") {
+      setShowCardInfo(true);
+    } else {
+      setShowCardInfo(false);
+    }
   };
 
   useEffect(() => {
@@ -70,7 +76,7 @@ const CheckoutScreen = () => {
 
           <div className="flex flex-col xl:flex-row justify-center xl:justify-between space-y-6 xl:space-y-0 xl:space-x-6 w-full">
             <div className="flex flex-col sm:flex-row xl:flex-col justify-center items-center bg-gray-100 py-7 sm:py-0 xl:py-10 px-10 xl:w-full">
-              <div className="flex flex-col justify-start items-start w-full space-y-4 md:-mt-72">
+              <div className="flex flex-col justify-start items-start w-full space-y-4">
                 <p className="text-xl md:text-2xl leading-normal text-gray-800">
                   Coming Soon
                 </p>
@@ -90,78 +96,13 @@ const CheckoutScreen = () => {
               <div className="mt-8">
                 <p className="text-rose-600 text-2xl">Shipping Details</p>
               </div>
-              <div className="mt-8">
-                <input
-                  id="name"
-                  className="border border-gray-300 p-4 rounded w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                  type="text"
-                  placeholder="Full Name"
-                />
-              </div>
-
-              <div className="mt-8">
-                <input
-                  id="monile_number"
-                  className="border border-gray-300 p-4 rounded w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                  type="number"
-                  placeholder="Mobile Number"
-                />
-              </div>
-
-              <div className="mt-8">
-                <input
-                  id="address"
-                  className="border border-gray-300 p-4 rounded w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                  type="text"
-                  placeholder="Address"
-                />
-              </div>
-
               <label className="mt-8 text-base leading-4 text-gray-800">
-                Card details
-              </label>
-              <div className="mt-2 flex-col">
-                <div>
-                  <input
-                    className="border rounded-tl rounded-tr border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                    type="email"
-                    placeholder="0000 1234 6549 15151"
-                  />
-                </div>
-                <div className="flex-row flex">
-                  <input
-                    className="border rounded-bl border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                    type="email"
-                    placeholder="MM/YY"
-                  />
-                  <input
-                    className="border rounded-br border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                    type="email"
-                    placeholder="CVC"
-                  />
-                </div>
-              </div>
-
-              <label className="mt-8 text-base leading-4 text-gray-800">
-                Name on card
-              </label>
-              <div className="mt-2 flex-col">
-                <div>
-                  <input
-                    className="border rounded border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                    type="email"
-                    placeholder="Name on card"
-                  />
-                </div>
-              </div>
-
-              <label className="mt-8 text-base leading-4 text-gray-800">
-                Country or region
+                Payment Method
               </label>
               <div className="mt-2 flex-col">
                 <div className="relative">
                   <button className="text-left border rounded-tr rounded-tl border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600 bg-white">
-                    {country}
+                    {method}
                   </button>
                   <svg
                     onClick={() => setMenu(!menu)}
@@ -188,44 +129,106 @@ const CheckoutScreen = () => {
                       (menu ? "block" : "hidden")
                     }
                   >
-                    {countries.map((country) => (
+                    {payment_method.map((payMethod) => (
                       <div
-                        key={country}
+                        key={payMethod}
                         className="cursor-pointer hover:bg-gray-800 hover:text-white px-4 py-2"
                         onClick={changeText}
                       >
-                        {country}
+                        {payMethod}
                       </div>
                     ))}
                   </div>
                 </div>
-                <input
-                  className="border rounded-bl rounded-br border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
-                  type="text"
-                  placeholder="ZIP"
-                />
               </div>
 
-              <button className="btn btn-primary rounded w-full mt-6">
-                <div>
-                  <p className="text-base leading-4">Cash on delivery</p>
-                </div>
-              </button>
-              <p className="text-sm text-gray-700 mt-3 font-semibold"> * For Cash on delivery, you do not need to put card related information.</p>
+              {showCardInfo ? (
+                <>
+                  <div className="mt-8">
+                    <input
+                      id="name"
+                      className="border border-gray-300 p-4 rounded w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                      type="text"
+                      placeholder="Full Name"
+                    />
+                  </div>
 
-              <div className="flex flex-row justify-center items-center mt-6">
-                <hr className="border w-full" />
-                <p className="flex flex-shrink-0 px-4 text-base leading-4 text-gray-600">
-                  OR
-                </p>
-                <hr className="border w-full" />
-              </div>
+                  <div className="mt-8">
+                    <input
+                      id="monile_number"
+                      className="border border-gray-300 p-4 rounded w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                      type="number"
+                      placeholder="Mobile Number"
+                    />
+                  </div>
 
-              <button className="mt-8 btn btn-primary rounded w-full">
-                <div>
-                  <p className="text-base leading-4">Pay now</p>
-                </div>
-              </button>
+                  <div className="mt-8">
+                    <input
+                      id="address"
+                      className="border border-gray-300 p-4 rounded w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                      type="text"
+                      placeholder="Address"
+                    />
+                  </div>
+
+                  <button className="btn btn-primary rounded w-full mt-6">
+                    <div>
+                      <p className="text-base leading-4">Place Order</p>
+                    </div>
+                  </button>
+                </>
+              ) : (
+                ""
+              )}
+
+              {!showCardInfo ? (
+                <>
+                  <label className="mt-8 text-base leading-4 text-gray-800">
+                    Card details
+                  </label>
+                  <div className="mt-2 flex-col">
+                    <div>
+                      <input
+                        className="border rounded-tl rounded-tr border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                        type="email"
+                        placeholder="0000 1234 6549 15151"
+                      />
+                    </div>
+                    <div className="flex-row flex">
+                      <input
+                        className="border rounded-bl border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                        type="email"
+                        placeholder="MM/YY"
+                      />
+                      <input
+                        className="border rounded-br border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                        type="email"
+                        placeholder="CVC"
+                      />
+                    </div>
+                  </div>
+                  <label className="mt-8 text-base leading-4 text-gray-800">
+                    Name on card
+                  </label>
+                  <div className="mt-2 flex-col">
+                    <div>
+                      <input
+                        className="border rounded border-gray-300 p-4 w-full text-base leading-4 placeholder-gray-600 text-gray-600"
+                        type="email"
+                        placeholder="Name on card"
+                      />
+                    </div>
+                  </div>
+
+                  <button className="mt-8 btn btn-primary rounded w-full">
+                    <div>
+                      <p className="text-base leading-4">Pay now</p>
+                    </div>
+                  </button>
+                </>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>
@@ -235,3 +238,13 @@ const CheckoutScreen = () => {
 };
 
 export default CheckoutScreen;
+
+{
+  /* <div className="flex flex-row justify-center items-center mt-6">
+                <hr className="border w-full" />
+                <p className="flex flex-shrink-0 px-4 text-base leading-4 text-gray-600">
+                  OR
+                </p>
+                <hr className="border w-full" />
+              </div> */
+}
