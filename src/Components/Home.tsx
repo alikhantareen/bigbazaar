@@ -103,6 +103,7 @@ const Home = () => {
                   </figure>
                   <div className="card-body flex flex-col justify-end">
                     <h2 className="card-title">{elem.title}</h2>
+                    <p className="">$ {elem.price}</p>
                     <Link
                       to={`/product/${elem._id}`}
                       className="card-actions justify-end"

@@ -50,11 +50,13 @@ app.get("/product/:id", async (req, res) => {
 
 //placing order
 app.post("/placeOrder", async (req, res) => {
+  //incoming arrays of objects
+  const data = req.body;
   try {
-    const data = req.body;
     const inInserted = await Order.insertMany(data);
     return res.status(200).json({ respose: true });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ response: false });
   }
 });
@@ -78,7 +80,6 @@ const signUp = async (req, res) => {
       message: "Please Provide Required Information",
     });
   }
-
   const hash_password = await bcrypt.hash(password, 10);
 
   const userData = {

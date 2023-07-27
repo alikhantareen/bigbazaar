@@ -8,8 +8,8 @@ const CheckoutScreen = () => {
   const cartItems = useCartStore((state: any) => state.cart);
   const payment_method = ["Pay through card", "Cash on delivery"];
   const [menu, setMenu] = useState(false);
-  const [showCardInfo, setShowCardInfo] = useState(false);
-  const [method, setMethod] = useState("Pay through card");
+  const [showCardInfo, setShowCardInfo] = useState(true);
+  const [method, setMethod] = useState("Cash on delivery");
   const [error, setError] = useState("");
 
   const changeText = (e: any) => {
@@ -34,24 +34,15 @@ const CheckoutScreen = () => {
       return false;
     }
     let order_arrays: any = [];
-    // cartItems.forEach((elem: any) => {
-    //   order_arrays.push({
-    //     name: (document.getElementById("name") as HTMLInputElement).value,
-    //     mobile_number: (
-    //       document.getElementById("mobile_number") as HTMLInputElement
-    //     ).value,
-    //     address: (document.getElementById("address") as HTMLInputElement).value,
-    //     pending: true,
-    //     payment_method: method,
-    //     user: localStorage.getItem("user_id"),
-    //     product_id: elem._id,
-    //     quantity: elem.quantity
-    //   });
-    // });
 
     cartItems.forEach((elem: any) => {
+      let obj = {
+        ...elem
+      }
+      delete obj._id;
+      delete obj.id;
       order_arrays.push({
-        ...elem,
+        ...obj,
         name: (document.getElementById("name") as HTMLInputElement).value,
         mobile_number: (
           document.getElementById("mobile_number") as HTMLInputElement
@@ -70,7 +61,7 @@ const CheckoutScreen = () => {
   async function placeOrder() {
     let orders = build_data();
     if (!orders) return setError("Please fill all the fields.");
-    const res = await axios.post(`http://localhost:5050/placeOrder`, orders);
+    const res = await axios.post(`http://localhost:5050/placeOrder`, orders);    
     const data = await res.data;
     if (data) {
       navigate(`/thankyou`);
@@ -298,9 +289,9 @@ const CheckoutScreen = () => {
                     />
                   </div>
 
-                  <button className="mt-8 btn btn-primary rounded w-full">
+                  <button className="mt-8 btn btn-primary rounded w-full" disabled={true}>
                     <div>
-                      <p className="text-base leading-4">Pay now</p>
+                      <p className="text-base leading-4">Coming soon</p>
                     </div>
                   </button>
                 </>
