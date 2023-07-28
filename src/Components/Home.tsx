@@ -25,9 +25,7 @@ const Home = () => {
   });
   async function getProducts(page = 1) {
     const res = await axios.get(`http://localhost:5050/products?page=${page}`);
-    const data = await res.data;
-    console.log(data);
-    
+    const data = await res.data;    
     return data;
   }
   function nextPage() {
@@ -263,6 +261,10 @@ const Home = () => {
   );
 };
 
-// onClick={() => setPage((pre) => pre - 1)}
-
 export default Home;
+
+
+//things to do
+//1: filters
+//2: check if item is added, then update quantity
+//3: 

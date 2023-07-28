@@ -7,10 +7,12 @@ import useCartStore from "../store";
 
 const ItemScreen = () => {
   const [count, setCount] = useState(1);
+  const [showAlert, setAlert] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
 
   const addToCart = useCartStore((state: any) => state.addToCart);
+  const cart = useCartStore((state: any) => state.cart);
 
   const addCount = () => {
     setCount((prev) => prev + 1);
@@ -23,8 +25,22 @@ const ItemScreen = () => {
   };
 
   function addOrder() {
+    setAlert(false);
     if (localStorage.getItem("token")) {
-      addToCart({ ...data, quantity: count });
+      let flag = false;
+      let item_to_insert = { ...data, quantity: count };
+      cart.forEach((elem: any) => {
+        if (elem.id === item_to_insert.id) {
+          elem.quantity += item_to_insert.quantity;
+          flag = true;
+        }
+      });
+      if (flag) {
+        setAlert(true);
+        return;
+      }
+      addToCart(item_to_insert);
+      setAlert(true);
       return;
     }
     localStorage.setItem("link", id!);
@@ -57,6 +73,28 @@ const ItemScreen = () => {
     <>
       <Header />
       <main className="w-full">
+        <div className="w-full flex justify-center">
+          <div
+            className={`${
+              showAlert ? "block" : "hidden"
+            } alert alert-success w-96`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>Item has been added to the cart!</span>
+          </div>
+        </div>
         {isLoading ? (
           <p>Loading...</p>
         ) : (

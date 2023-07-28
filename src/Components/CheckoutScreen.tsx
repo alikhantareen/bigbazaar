@@ -40,7 +40,6 @@ const CheckoutScreen = () => {
         ...elem
       }
       delete obj._id;
-      delete obj.id;
       order_arrays.push({
         ...obj,
         name: (document.getElementById("name") as HTMLInputElement).value,
